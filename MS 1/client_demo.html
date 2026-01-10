@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>WebSocket Test</title></head>
+<body>
+  <h3>WebSocket Client</h3>
+  <input id="msg" placeholder="type message">
+  <button id="send">Send</button>
+  <pre id="log"></pre>
+
+  <script>
+    const log = (t)=> { document.getElementById('log').textContent += t + "\n"; }
+    const ws = new WebSocket("ws://localhost:8000/ws");
+    ws.onopen = () => log("connected to server");
+    ws.onmessage = (ev) => log("recv: " + ev.data);
+    ws.onclose = ()=> log("connection closed");
+    ws.onerror = (e)=> log("error: " + e);
+
+    document.getElementById('send').onclick = () => {
+      const m = document.getElementById('msg').value;
+      ws.send(m);
+      log("sent: " + m);
+    };
+  </script>
+</body>
+</html>
